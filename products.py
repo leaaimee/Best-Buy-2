@@ -5,7 +5,10 @@ class Product:
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """Initialize with name, price, and quantity"""
         if not isinstance(name, str):
-            raise TypeError("name must be a string")
+            raise TypeError("name cannot be empty")
+        if not name.strip():
+            raise ValueError("name cannot be empty or whitespace only")
+
         if not isinstance(price, (int, float)):
             raise TypeError("price must be a number")
         if not isinstance(quantity, int):
