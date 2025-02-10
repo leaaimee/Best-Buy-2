@@ -27,8 +27,7 @@ class Product:
 
     def get_quantity(self) -> int:
         """returns the quantity of the corresponding product"""
-        return float(self.quantity)
-
+        return self.quantity
 
     def set_quantity(self, quantity: int) -> int:
         """Update product quantity"""
@@ -72,16 +71,39 @@ class Product:
         return self.price * quantity
 
 
+class NonStockedProduct(Product):
+    """Represents products that don't have a physical stock count"""
+    def __init__(self, name: str, price: float):
+        super().__init__(name, price, quantity=0)
 
-# def main():
-#     bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-#     print(bose.get_quantity())
-#     print(bose.set_quantity(50))
-#     print(bose.get_quantity())
-#     print(bose.set_quantity(-150))
-#     print(bose.get_quantity())
-#     print(bose.show())
-#     print(bose.buy(100))
-#
-# if __name__ == "__main__":
-#     main()
+    def show(self) -> str:
+        """Returns product details, indicating that stock tracking is not required"""
+        return f"{self.name}, Price: ${self.price} (Available)"
+
+    def buy(self, amount: int):
+        """Processes a purchase without stock limitations"""
+        return self.price * amount
+
+
+class LimitedProduct(Product):
+    """Represents a product that has a maximum purchase limit per order"""
+    def __init__(self, name: str, price: float, quantity: int, maximum: int):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+    def show(self) -> str:
+        """Display product details including purchase limit"""
+        return f"{self.name}, Price: ${self.price}, Max per order: {self.maximum}"
+
+    def buy(self, amount: int):
+        """Restricts purchases to the maximum allowed per order"""
+        if amount > self.maximum:
+            raise ValueError(f"{self.name} can only be purchased {self.maximum} times per order")
+        return super().buy(amount)
+
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()

@@ -1,39 +1,46 @@
 import store
 import products
 
-def start(store):
-
+def start(store_instance):
+    """Runs the main menu to interact with the store"""
     def list_products()-> None:
         """Displays all products currently available in the store"""
-        products= store.get_all_products()
-        for product in products:
+        product_list = store_instance.get_all_products()
+        for product in product_list:
             print(product.show())
 
 
     def show_total() -> None:
         """Prints the total quantity of all items available in the store"""
-        print(f"Total quantity in store: {store.get_total_quantity()} Items")
-
+        print(f"Total quantity in store: {store_instance.get_total_quantity()} Items")
 
     def make_order() -> None:
         """Allows the user to select products and quantities to purchase"""
         shopping_list = []
-        products = store.get_all_products()
-        for i, product in enumerate(products, 1):
+        product_list = store_instance.get_all_products()
+
+        for i, product in enumerate(product_list, 1):
             print(f"{i}. {product.show()}")
 
         while True:
             try:
-                choice = input("Choose a product by number (or type 'done' to finish): ")
-                if choice.lower() == "done":
+                user_choice = input("Choose a product by number (or type 'done' to finish): ")
+                if user_choice.lower() == "done":
                     break
-                product_index = int(choice) - 1
-                quantity = int(input("Enter quantity: "))
-                shopping_list.append((products[product_index], quantity))
-            except (IndexError, ValueError):
-                print("invalid choice. Please try again ")
+                product_index = int(user_choice) - 1
 
-        total_price = store.order(shopping_list)
+                if product_index < 0 or product_index >= len(product_list):
+                    print("Invalid choice. Please select a valid product number.")
+                    continue
+
+                quantity = int(input("Enter quantity: "))
+
+                product_list[product_index].buy(quantity)
+                shopping_list.append((product_list[product_index], quantity))
+            except (ValueError, IndexError) as error:
+                print(f"Invalid input: {error}")
+
+        total_price = store_instance.order(shopping_list)
         print(f"Total order cost: ${total_price:.2f}")
 
 
@@ -68,9 +75,12 @@ def start(store):
 
 def main() -> None:
 
-    product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
-                     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                     products.Product("Google Pixel 7", price=500, quantity=250)
+    product_list = [
+        products.Product("MacBook Air M2", price=1450, quantity=100),
+        products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+        products.Product("Google Pixel 7", price=500, quantity=250),
+        products.NonStockedProduct("Windows License", price=125),
+        products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
                    ]
     best_buy = store.Store(product_list)
     start(best_buy)
