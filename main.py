@@ -108,7 +108,7 @@ def main() -> None:
     product_list[3].set_promotion(thirty_percent)
 
     # Test str and comparison
-    mac.price = -100
+    # mac.price = -100
     print(mac)
     print(mac > bose)
     print(mac in store1)
