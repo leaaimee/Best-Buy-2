@@ -3,12 +3,12 @@ import products
 import promotions
 
 def start(store_instance):
-    """Runs the main menu to interact with the store"""
+    """ Starts the interactive menu for the store and handles user input """
     def list_products()-> None:
         """Displays all products currently available in the store"""
         product_list = store_instance.get_all_products()
         for product in product_list:
-            print(product.show())
+            print(product)
 
 
     def show_total() -> None:
@@ -21,7 +21,7 @@ def start(store_instance):
         product_list = store_instance.get_all_products()
 
         for i, product in enumerate(product_list, 1):
-            print(f"{i}. {product.show()}")
+            print(f"{i}. {product}")
 
         while True:
             try:
