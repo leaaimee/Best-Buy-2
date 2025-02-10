@@ -85,17 +85,17 @@ def main() -> None:
                    ]
 
     # Test products
-    mac = products.Product("MacBook Air M2", price=1450, quantity=100)
-    bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-    pixel = products.LimitedProduct("Google Pixel 7", price=500, quantity=250, maximum=1)
+    # mac = products.Product("MacBook Air M2", price=1450, quantity=100)
+    # bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+    # pixel = products.LimitedProduct("Google Pixel 7", price=500, quantity=250, maximum=1)
 
     # Create stores
-    store1 = store.Store([mac, bose])
-    store2 = store.Store([pixel])
+    # store1 = store.Store([mac, bose])
+    # store2 = store.Store([pixel])
 
     # Test combining stores with +
-    combined_store = store1 + store2
-    print(f"Combined store products: {len(combined_store.products)}")
+    # combined_store = store1 + store2
+    # print(f"Combined store products: {len(combined_store.products)}")
 
     # Create promotion catalog
     second_half_price = promotions.SecondHalfPrice("Second Half price!")
@@ -109,10 +109,10 @@ def main() -> None:
 
     # Test str and comparison
     # mac.price = -100
-    print(mac)
-    print(mac > bose)
-    print(mac in store1)
-    print(pixel in store1)
+    # print(mac)
+    # print(mac > bose)
+    # print(mac in store1)
+    # print(pixel in store1)
 
     best_buy = store.Store(product_list)
     start(best_buy)
