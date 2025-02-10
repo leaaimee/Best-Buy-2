@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from products import Product
 
 class Promotion(ABC):
     """ Abstract base class for promotions """
@@ -10,7 +11,6 @@ class Promotion(ABC):
     def apply_promotion(self, product, quantity: int) -> float:
         """ Calculate the discounted price for a given product and quantity """
         pass
-
 
 class PercentDiscount(Promotion):
     """ Applies a percentage discount to the total price """
@@ -24,9 +24,12 @@ class PercentDiscount(Promotion):
         discount = (self.percent / 100) * product.price
         return quantity * (product.price - discount)
 
-
 class SecondHalfPrice(Promotion):
     """ Applies 'second item at half price' promotion """
+
+    def __init__(self, name: str):
+        super().__init__(name)
+
     def apply_promotion(self, product, quantity: int) -> float:
         full_price_items = (quantity + 1) // 2
         half_price_items = quantity // 2
@@ -35,7 +38,11 @@ class SecondHalfPrice(Promotion):
 
 class ThirdOneFree(Promotion):
     """ Applies 'buy 2, get 1 free' promotion """
-    def apply_promotion(self, product, quantity: int) -> float:
+
+    def __init__(self, name: str):
+        super().__init__(name)
+
+    def apply_promotion(self, product: Product, quantity: int) -> float:
         sets_of_three = quantity // 3
         remaining_items = quantity % 3
         return (sets_of_three * 2 * product.price) + (remaining_items * product.price)

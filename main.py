@@ -84,13 +84,35 @@ def main() -> None:
         products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
                    ]
 
+    # Test products
+    mac = products.Product("MacBook Air M2", price=1450, quantity=100)
+    bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+    pixel = products.LimitedProduct("Google Pixel 7", price=500, quantity=250, maximum=1)
+
+    # Create stores
+    store1 = store.Store([mac, bose])
+    store2 = store.Store([pixel])
+
+    # Test combining stores with +
+    combined_store = store1 + store2
+    print(f"Combined store products: {len(combined_store.products)}")
+
+    # Create promotion catalog
     second_half_price = promotions.SecondHalfPrice("Second Half price!")
     third_one_free = promotions.ThirdOneFree("Third One Free!")
     thirty_percent = promotions.PercentDiscount("30% off!", percent=30)
 
+    # Add promotions to products
     product_list[0].set_promotion(second_half_price)
     product_list[1].set_promotion(third_one_free)
     product_list[3].set_promotion(thirty_percent)
+
+    # Test str and comparison
+    mac.price = -100
+    print(mac)
+    print(mac > bose)
+    print(mac in store1)
+    print(pixel in store1)
 
     best_buy = store.Store(product_list)
     start(best_buy)

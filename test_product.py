@@ -50,4 +50,3 @@ def test_check_quantity_exception():
     with pytest.raises(ValueError, match=error_message):
         product.buy(2)
 
-        product.buy(2)

@@ -23,7 +23,7 @@ class Store:
 
     def get_total_quantity(self) -> int:
         """Returns the total quantity of all products in the store"""
-        return sum(product.get_quantity() for product in self.products)
+        return sum(product.quantity for product in self.products)
 
 
     def get_all_products(self) -> list:
@@ -31,7 +31,8 @@ class Store:
         return [product for product in self.products if product.is_active()]
 
 
-    def order(self, shopping_list: list[tuple[Product, int]]) -> float:
+    @staticmethod
+    def order(shopping_list: list[tuple[Product, int]]) -> float:
         """Processes an order & returns the total price"""
         if not all(isinstance(item, tuple) and len(item) == 2 for item in shopping_list):
             raise TypeError("Shopping list must be a list of (Product, int) tuples")
@@ -39,6 +40,21 @@ class Store:
         for product, quantity in shopping_list:
             total_price += product.buy(quantity)
         return total_price
+
+
+    def __contains__(self, product):
+        """Checks if the product exists in the store"""
+        return product in self.products
+
+    def __add__(self, other):
+        """Combines two stores by merging their product lists"""
+        if not isinstance(other, Store):
+            return NotImplemented
+        combined_products = self.products + other.products
+        return Store(combined_products)
+
+    def __str__(self):
+        return f"Store with {len(self.products)} products."
 
 
 def main():
